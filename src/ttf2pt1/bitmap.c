@@ -454,8 +454,8 @@ dosubfrag(
 		&& ( outend && f->sublen <= pf->sublen
 			|| ( pf->sublen == f->sublen 
 				&& (lf->sublen == 0
-					|| ( abs(limfront[0]-limend[0]) >= abs(pf->vect[0][0]-pf->vect[3][0])
-						&& abs(limfront[1]-limend[1]) >= abs(pf->vect[0][1]-pf->vect[3][1]) ))
+					|| ( fabs(limfront[0]-limend[0]) >= fabs(pf->vect[0][0]-pf->vect[3][0])
+						&& fabs(limfront[1]-limend[1]) >= fabs(pf->vect[0][1]-pf->vect[3][1]) ))
 			)
 		)
 	);
@@ -464,8 +464,8 @@ dosubfrag(
 		&& ( outfront && f->sublen <= lf->sublen
 			|| ( lf->sublen == f->sublen 
 				&& (pf == 0 
-					|| ( abs(limfront[0]-limend[0]) >= abs(lf->vect[0][0]-lf->vect[3][0])
-						&& abs(limfront[1]-limend[1]) >= abs(lf->vect[0][1]-lf->vect[3][1]) )) 
+					|| ( fabs(limfront[0]-limend[0]) >= fabs(lf->vect[0][0]-lf->vect[3][0])
+						&& fabs(limfront[1]-limend[1]) >= fabs(lf->vect[0][1]-lf->vect[3][1]) )) 
 			)
 		)
 	);
@@ -1996,7 +1996,7 @@ bmp_outline(
 					for(i=1; i<len; i++, pge = pge->frwd)
 						for(d = GEXFI_CONVEX; d<= GEXFI_CONCAVE; d++) {
 							if(X_FRAG(pge)->len[d]) {
-								fprintf(stderr, "    removed %s frag at %p len=%d covered by line\n", 
+								fprintf(stderr, "    removed %s frag at %p len=%d covered by line %d\n", 
 									gxf_name[d], pge, X_FRAG(pge)->len[d], len);
 								good = 0;
 							}

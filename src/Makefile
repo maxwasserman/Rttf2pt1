@@ -7,7 +7,12 @@ FT2_CFLAGS = $(CFLAGS) -c
 
 # CFLAGS for ttf2pt1
 # Also add the definitions for CFLAGS_FT and LIBS_FT from ttf2pt1's Makefile
-TTF2PT1_CFLAGS = $(CFLAGS) -DUSE_FREETYPE -I../freetype2/include
+# Also disable a bunch of warnings because they cause problems with R CMD check
+# as of R 3.1.1
+TTF2PT1_CFLAGS = $(CFLAGS) -DUSE_FREETYPE -I../freetype2/include \
+  -Wno-comment -Wno-format -Wno-logical-op-parentheses -Wno-pointer-sign \
+  -Wno-unused-function -Wno-unused-variable -Wno-parentheses \
+  -Wno-unused-label
 # Linker flags for ttf2pt1
 TTF2PT1_LIBS_FT = -L../freetype2/objs -lfreetype
 
