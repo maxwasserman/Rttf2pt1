@@ -4,6 +4,11 @@ CFLAGS = `"$(R_HOME)/bin/R" CMD config CFLAGS`
 # Makeconf is not sourced for Makefile.win
 include $(R_HOME)/etc/$(R_ARCH)/Makeconf
 
+# Forcing 32 bit fails on gcc-4.9.3 so we remove it if COMPILED_BY is set
+ifeq ($(strip $(COMPILED_BY)),)
+ARCH = -m32
+endif
+
 # Make setup flags for Freetype 2. These settings are used on the first run
 # of "make", to set up the options for the the second run of make, which
 # does the compiling. These settings are needed to convince it that it is
@@ -12,17 +17,12 @@ include $(R_HOME)/etc/$(R_ARCH)/Makeconf
 # correctly.
 FT2_MAKE_SETUP_FLAGS = PLATFORM=ansi CONFIG_FILE=ansi.mk std_setup
 # CFLAGS for freetype. Need -c to not run linker (otherwise it doesn't compile)
-FT2_CFLAGS = $(CFLAGS) -m32 -DWINDOWS -c
+FT2_CFLAGS = $(CFLAGS) $(ARCH) -DWINDOWS -c
 
 # CFLAGS for ttf2pt1
 # Also add the definitions for CFLAGS_FT and LIBS_FT from ttf2pt1's Makefile
 # Also disable a bunch of warnings because they cause problems with R CMD check
 # as of R 3.1.1
-
-# Forcing 32 bit fails on gcc-4.9.3 so we remove it if COMPILED_BY is set
-ifeq ($(strip $(COMPILED_BY)),)
-ARCH = -m32
-endif
 
 TTF2PT1_CFLAGS = $(CFLAGS) $(ARCH) -DWINDOWS -DUSE_FREETYPE -I../freetype2/include \
   -Wno-comment -Wno-format -Wno-logical-op-parentheses -Wno-pointer-sign \
